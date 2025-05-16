@@ -35,7 +35,7 @@ namespace ZapateriaWinForms.Views
 
             // Encabezado
             var lblTitulo = new Label {
-                Text = "Zapatería Elegante",
+                Text = "Zapateríag",
                 Font = new System.Drawing.Font("Segoe UI", 28, System.Drawing.FontStyle.Bold),
                 AutoSize = false,
                 TextAlign = System.Drawing.ContentAlignment.MiddleCenter,
