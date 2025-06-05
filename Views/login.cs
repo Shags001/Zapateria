@@ -3,6 +3,7 @@ using System.Data.SqlClient;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
+using Timer = System.Windows.Forms.Timer;
 
 namespace ZapateriaWinForms.Views
 {
@@ -135,72 +136,59 @@ namespace ZapateriaWinForms.Views
             panelRight.Controls.Add(btnClose);
 
             // Título del formulario
-            lblTitulo = new Label()
-            {
-                Text = "Iniciar Sesión",
-                Font = new Font("Segoe UI", 28, FontStyle.Bold),
-                ForeColor = Color.FromArgb(17, 24, 39),
-                AutoSize = false,
-                Size = new Size(350, 50),
-                Location = new Point(50, 80),
-                TextAlign = ContentAlignment.MiddleLeft
-            };
+            lblTitulo = new Label();
+            lblTitulo.Text = "Iniciar Sesión";
+            lblTitulo.Font = new Font("Segoe UI", 28, FontStyle.Bold);
+            lblTitulo.ForeColor = Color.FromArgb(17, 24, 39);
+            lblTitulo.AutoSize = false;
+            lblTitulo.Size = new Size(350, 50);
+            lblTitulo.Location = new Point(50, 80);
+            lblTitulo.TextAlign = ContentAlignment.MiddleLeft;
             panelRight.Controls.Add(lblTitulo);
 
-            lblSubtitulo = new Label()
-            {
-                Text = "Accede a tu cuenta para continuar",
-                Font = new Font("Segoe UI", 11),
-                ForeColor = Color.FromArgb(107, 114, 128),
-                AutoSize = false,
-                Size = new Size(350, 25),
-                Location = new Point(50, 130)
-            };
+            lblSubtitulo = new Label();
+            lblSubtitulo.Text = "Accede a tu cuenta para continuar";
+            lblSubtitulo.Font = new Font("Segoe UI", 11);
+            lblSubtitulo.ForeColor = Color.FromArgb(107, 114, 128);
+            lblSubtitulo.AutoSize = false;
+            lblSubtitulo.Size = new Size(350, 25);
+            lblSubtitulo.Location = new Point(50, 130);
             panelRight.Controls.Add(lblSubtitulo);
 
             // Campo Email
-            lblUsuario = new Label()
-            {
-                Text = "Correo electrónico",
-                Location = new Point(50, 180),
-                AutoSize = true,
-                Font = new Font("Segoe UI", 10, FontStyle.Regular),
-                ForeColor = Color.FromArgb(55, 65, 81)
-            };
+            lblUsuario = new Label();
+            lblUsuario.Text = "Correo electrónico";
+            lblUsuario.Location = new Point(50, 180);
+            lblUsuario.AutoSize = true;
+            lblUsuario.Font = new Font("Segoe UI", 10, FontStyle.Regular);
+            lblUsuario.ForeColor = Color.FromArgb(55, 65, 81);
             panelRight.Controls.Add(lblUsuario);
 
-            txtUsuario = new RoundedTextBox()
-            {
-                Location = new Point(50, 205),
-                Width = 350,
-                Height = 45,
-                Font = new Font("Segoe UI", 11),
-                BackColor = Color.FromArgb(249, 250, 251),
-                ForeColor = Color.FromArgb(17, 24, 39),
-                BorderStyle = BorderStyle.None,
-                PlaceholderText = "nombre@ejemplo.com"
-            };
-            txtUsuario.Padding = new Padding(15, 12, 15, 12);
+            txtUsuario = new RoundedTextBox();
+            txtUsuario.Location = new Point(50, 205);
+            txtUsuario.Width = 350;
+            txtUsuario.Height = 45;
+            txtUsuario.Font = new Font("Segoe UI", 11);
+            txtUsuario.BackColor = Color.FromArgb(249, 250, 251);
+            txtUsuario.ForeColor = Color.FromArgb(17, 24, 39);
+            txtUsuario.BorderStyle = BorderStyle.None;
+            txtUsuario.PlaceholderText = "nombre@ejemplo.com";
             panelRight.Controls.Add(txtUsuario);
 
             // Campo Contraseña
-            lblContrasena = new Label()
-            {
-                Text = "Contraseña",
-                Location = new Point(50, 270),
-                AutoSize = true,
-                Font = new Font("Segoe UI", 10, FontStyle.Regular),
-                ForeColor = Color.FromArgb(55, 65, 81)
-            };
+            lblContrasena = new Label();
+            lblContrasena.Text = "Contraseña";
+            lblContrasena.Location = new Point(50, 270);
+            lblContrasena.AutoSize = true;
+            lblContrasena.Font = new Font("Segoe UI", 10, FontStyle.Regular);
+            lblContrasena.ForeColor = Color.FromArgb(55, 65, 81);
             panelRight.Controls.Add(lblContrasena);
 
             // Panel para contraseña con botón mostrar/ocultar
-            Panel panelPassword = new Panel()
-            {
-                Location = new Point(50, 295),
-                Size = new Size(350, 45),
-                BackColor = Color.FromArgb(249, 250, 251)
-            };
+            Panel panelPassword = new Panel();
+            panelPassword.Location = new Point(50, 295);
+            panelPassword.Size = new Size(350, 45);
+            panelPassword.BackColor = Color.FromArgb(249, 250, 251);
             panelPassword.Paint += (s, e) =>
             {
                 using (Pen pen = new Pen(Color.FromArgb(209, 213, 219), 1))
@@ -212,69 +200,63 @@ namespace ZapateriaWinForms.Views
             };
             panelRight.Controls.Add(panelPassword);
 
-            txtContrasena = new TextBox()
-            {
-                Location = new Point(15, 12),
-                Width = 300,
-                Height = 21,
-                UseSystemPasswordChar = true,
-                Font = new Font("Segoe UI", 11),
-                BackColor = Color.FromArgb(249, 250, 251),
-                ForeColor = Color.FromArgb(17, 24, 39),
-                BorderStyle = BorderStyle.None
-            };
+            txtContrasena = new TextBox();
+            txtContrasena.Location = new Point(15, 12);
+            txtContrasena.Width = 300;
+            txtContrasena.Height = 21;
+            txtContrasena.UseSystemPasswordChar = true;
+            txtContrasena.Font = new Font("Segoe UI", 11);
+            txtContrasena.BackColor = Color.FromArgb(249, 250, 251);
+            txtContrasena.ForeColor = Color.FromArgb(17, 24, 39);
+            txtContrasena.BorderStyle = BorderStyle.None;
             panelPassword.Controls.Add(txtContrasena);
 
-            btnMostrarPassword = new Button()
-            {
-                Text = "👁",
-                Size = new Size(30, 21),
-                Location = new Point(315, 12),
-                FlatStyle = FlatStyle.Flat,
-                BackColor = Color.Transparent,
-                ForeColor = Color.FromArgb(107, 114, 128),
-                Font = new Font("Segoe UI", 10),
-                Cursor = Cursors.Hand
-            };
+            btnMostrarPassword = new Button();
+            btnMostrarPassword.Text = "👁";
+            btnMostrarPassword.Size = new Size(30, 21);
+            btnMostrarPassword.Location = new Point(315, 12);
+            btnMostrarPassword.FlatStyle = FlatStyle.Flat;
+            btnMostrarPassword.BackColor = Color.Transparent;
+            btnMostrarPassword.ForeColor = Color.FromArgb(107, 114, 128);
+            btnMostrarPassword.Font = new Font("Segoe UI", 10);
+            btnMostrarPassword.Cursor = Cursors.Hand;
             btnMostrarPassword.FlatAppearance.BorderSize = 0;
             btnMostrarPassword.Click += BtnMostrarPassword_Click;
             panelPassword.Controls.Add(btnMostrarPassword);
 
             // Botón de inicio de sesión
-            btnLogin = new RoundedButton()
-            {
-                Text = "Iniciar Sesión",
-                Location = new Point(50, 370),
-                Width = 350,
-                Height = 50,
-                Font = new Font("Segoe UI", 12, FontStyle.Bold),
-                BackColor = Color.FromArgb(59, 130, 246),
-                ForeColor = Color.White,
-                FlatStyle = FlatStyle.Flat,
-                Cursor = Cursors.Hand,
-                BorderRadius = 10
-            };
+            btnLogin = new RoundedButton();
+            btnLogin.Text = "Iniciar Sesión";
+            btnLogin.Location = new Point(50, 370);
+            btnLogin.Width = 350;
+            btnLogin.Height = 50;
+            btnLogin.Font = new Font("Segoe UI", 12, FontStyle.Bold);
+            btnLogin.BackColor = Color.FromArgb(59, 130, 246);
+            btnLogin.ForeColor = Color.White;
+            btnLogin.FlatStyle = FlatStyle.Flat;
+            btnLogin.Cursor = Cursors.Hand;
+            btnLogin.BorderRadius = 10;
             btnLogin.FlatAppearance.BorderSize = 0;
             btnLogin.FlatAppearance.MouseOverBackColor = Color.FromArgb(37, 99, 235);
             btnLogin.Click += BtnLogin_Click;
             panelRight.Controls.Add(btnLogin);
 
             // Mensaje de estado
-            lblMensaje = new Label()
-            {
-                Location = new Point(50, 440),
-                Width = 350,
-                Height = 30,
-                ForeColor = Color.Red,
-                Font = new Font("Segoe UI", 10),
-                TextAlign = ContentAlignment.MiddleCenter,
-                BackColor = Color.Transparent
-            };
+            lblMensaje = new Label();
+            lblMensaje.Location = new Point(50, 440);
+            lblMensaje.Width = 350;
+            lblMensaje.Height = 30;
+            lblMensaje.ForeColor = Color.Red;
+            lblMensaje.Font = new Font("Segoe UI", 10);
+            lblMensaje.TextAlign = ContentAlignment.MiddleCenter;
+            lblMensaje.BackColor = Color.Transparent;
+            lblMensaje.Text = "";
             panelRight.Controls.Add(lblMensaje);
 
             // Animación de entrada
             this.Opacity = 0;
-            Timer fadeInTimer = new Timer() { Interval = 20 };
+            Timer fadeInTimer = new Timer();
+            fadeInTimer.Interval = 20;
             fadeInTimer.Tick += (s, e) =>
             {
                 if (this.Opacity < 1)
@@ -396,7 +378,8 @@ namespace ZapateriaWinForms.Views
 
             // Animación del mensaje
             lblMensaje.Visible = true;
-            Timer timer = new Timer() { Interval = 3000 };
+            Timer timer = new Timer();
+            timer.Interval = 3000;
             timer.Tick += (s, e) =>
             {
                 lblMensaje.Text = "";
@@ -450,39 +433,35 @@ namespace ZapateriaWinForms.Views
     public class RoundedTextBox : TextBox
     {
         public string PlaceholderText { get; set; } = "";
-        private bool isPlaceholder = true;
+        private bool isPlaceholder = false;
+
+        public RoundedTextBox()
+        {
+            this.SetStyle(ControlStyles.UserPaint, true);
+            this.BorderStyle = BorderStyle.None;
+        }
 
         protected override void OnPaint(PaintEventArgs e)
         {
             Rectangle rect = new Rectangle(0, 0, this.Width - 1, this.Height - 1);
+            using (SolidBrush brush = new SolidBrush(this.BackColor))
+            {
+                GraphicsPath path = GetRoundedRectangle(rect, 8);
+                e.Graphics.FillPath(brush, path);
+            }
+
             using (Pen pen = new Pen(Color.FromArgb(209, 213, 219), 1))
             {
                 GraphicsPath path = GetRoundedRectangle(rect, 8);
                 e.Graphics.DrawPath(pen, path);
             }
-            base.OnPaint(e);
-        }
 
-        protected override void OnEnter(EventArgs e)
-        {
-            if (isPlaceholder && this.Text == PlaceholderText)
-            {
-                this.Text = "";
-                this.ForeColor = Color.FromArgb(17, 24, 39);
-                isPlaceholder = false;
-            }
-            base.OnEnter(e);
-        }
+            // Dibujar el texto manualmente
+            Rectangle textRect = new Rectangle(15, (this.Height - this.Font.Height) / 2, this.Width - 30, this.Font.Height);
+            string displayText = string.IsNullOrEmpty(this.Text) && !this.Focused ? PlaceholderText : this.Text;
+            Color textColor = (string.IsNullOrEmpty(this.Text) && !this.Focused) ? Color.FromArgb(156, 163, 175) : this.ForeColor;
 
-        protected override void OnLeave(EventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(this.Text))
-            {
-                this.Text = PlaceholderText;
-                this.ForeColor = Color.FromArgb(156, 163, 175);
-                isPlaceholder = true;
-            }
-            base.OnLeave(e);
+            TextRenderer.DrawText(e.Graphics, displayText, this.Font, textRect, textColor, TextFormatFlags.Left | TextFormatFlags.VerticalCenter);
         }
 
         private GraphicsPath GetRoundedRectangle(Rectangle rect, int radius)
