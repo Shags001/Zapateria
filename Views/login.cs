@@ -235,7 +235,7 @@ namespace ZapateriaWinForms.Views
             btnLogin.ForeColor = Color.White;
             btnLogin.FlatStyle = FlatStyle.Flat;
             btnLogin.Cursor = Cursors.Hand;
-            btnLogin.BorderRadius = 10;
+            ((RoundedButton)btnLogin).BorderRadius = 10;
             btnLogin.FlatAppearance.BorderSize = 0;
             btnLogin.FlatAppearance.MouseOverBackColor = Color.FromArgb(37, 99, 235);
             btnLogin.Click += BtnLogin_Click;
