@@ -57,7 +57,7 @@ namespace ZapateriaWinForms.Views
             // Etiqueta usuario
             lblUsuario = new Label()
             {
-                Text = "Correo:",
+                Text = "Usuario:",
                 Location = new Point(30, 60),
                 AutoSize = true,
                 Font = new Font("Segoe UI", 10, FontStyle.Bold),
