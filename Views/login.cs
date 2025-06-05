@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace ZapateriaWinForms.Views
 {
-    internal class login : Form
+    internal class login : Form us
     {
         private Label lblTitulo;
         private Label lblUsuario;
