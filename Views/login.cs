@@ -155,9 +155,9 @@ namespace ZapateriaWinForms.Views
             lblSubtitulo.Location = new Point(50, 130);
             panelRight.Controls.Add(lblSubtitulo);
 
-            // Campo Email
+            // Campo Usuario
             lblUsuario = new Label();
-            lblUsuario.Text = "Correo electrónico";
+            lblUsuario.Text = "Usuario";
             lblUsuario.Location = new Point(50, 180);
             lblUsuario.AutoSize = true;
             lblUsuario.Font = new Font("Segoe UI", 10, FontStyle.Regular);
@@ -172,7 +172,7 @@ namespace ZapateriaWinForms.Views
             txtUsuario.BackColor = Color.FromArgb(249, 250, 251);
             txtUsuario.ForeColor = Color.FromArgb(17, 24, 39);
             txtUsuario.BorderStyle = BorderStyle.None;
-            txtUsuario.PlaceholderText = "nombre@ejemplo.com";
+            txtUsuario.PlaceholderText = "Ingrese su usuario";
             panelRight.Controls.Add(txtUsuario);
 
             // Campo Contraseña
@@ -338,11 +338,11 @@ namespace ZapateriaWinForms.Views
                     string query = @"
                         SELECT Posicion 
                         FROM Empleados 
-                        WHERE Correo = @correo AND Contrasena = @contrasena";
+                        WHERE Correo = @usuario AND Contrasena = @contrasena";
 
                     using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
-                        cmd.Parameters.AddWithValue("@correo", usuario);
+                        cmd.Parameters.AddWithValue("@usuario", usuario);
                         cmd.Parameters.AddWithValue("@contrasena", contrasena);
 
                         object result = cmd.ExecuteScalar();
@@ -354,7 +354,7 @@ namespace ZapateriaWinForms.Views
                         }
                         else
                         {
-                            ShowMessage("Correo o contraseña incorrectos.", false);
+                            ShowMessage("Usuario o contraseña incorrectos.", false);
                         }
                     }
                 }
