@@ -1,3 +1,5 @@
+using ZapateriaWinForms.Views;
+
 namespace ZapateriaWinForms;
 
 static class Program
@@ -9,6 +11,7 @@ static class Program
     static void Main()
     {
         ApplicationConfiguration.Initialize();
-        Application.Run(new ZapateriaWinForms.Views.MainForm());
-    }    
+        Application.Run(new login());
+
+    }
 }
