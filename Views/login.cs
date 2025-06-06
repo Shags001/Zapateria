@@ -231,7 +231,7 @@ namespace ZapateriaWinForms.Views
             btnLogin.Location = new Point(50, 370);
             btnLogin.Width = 350;
             btnLogin.Height = 50;
-            btnLogin.Font = new Font("Segoe UI", 12, FontStyle.Bold);
+            btnLogin.Font = new Font("Poppins", 13, FontStyle.Bold);
             btnLogin.BackColor = Color.FromArgb(59, 130, 246);
             btnLogin.ForeColor = Color.White;
             btnLogin.FlatStyle = FlatStyle.Flat;
