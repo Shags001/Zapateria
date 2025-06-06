@@ -1,33 +1,51 @@
 ﻿using System;
-using System.Data.SqlClient;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
+using Microsoft.Data.SqlClient;
 using Timer = System.Windows.Forms.Timer;
 
 namespace ZapateriaWinForms.Views
 {
+#pragma warning disable CS8981 // El nombre 'login' solo contiene minúsculas, pero se mantiene por compatibilidad y estilo del proyecto.
     internal class login : Form
+#pragma warning restore CS8981
     {
-        private Label lblTitulo;
-        private Label lblSubtitulo;
-        private Label lblUsuario;
-        private TextBox txtUsuario;
-        private Label lblContrasena;
-        private TextBox txtContrasena;
-        private Button btnLogin;
-        private Button btnMostrarPassword;
-        private Label lblMensaje;
-        private Panel panelMain;
-        private Panel panelLeft;
-        private Panel panelRight;
-        private PictureBox picLogo;
-        private string connectionString = @"Server=TU_SERVIDOR;Database=ZapateriaBD;Trusted_Connection=True;";
+        private Label? lblTitulo;
+        private Label? lblSubtitulo;
+        private Label? lblUsuario;
+        private TextBox? txtUsuario;
+        private Label? lblContrasena;
+        private TextBox? txtContrasena;
+        private Button? btnLogin;
+        private Button? btnMostrarPassword;
+        private Label? lblMensaje;
+        private Panel? panelMain;
+        private Panel? panelLeft;
+        private Panel? panelRight;
+        private PictureBox? picLogo;
+        private string connectionString = ZapateriaWinForms.Utilities.ConfigHelper.GetConnectionString();
         private bool passwordVisible = false;
+        private string? userRol = null;
+        private string? userName = null;
 
         public login()
         {
             InitializeComponents();
+            // Si el usuario cierra el login, terminar la app (solo si no hay otro formulario abierto que NO sea login)
+            this.FormClosed += (s, e) => {
+                bool hayOtroForm = false;
+                foreach (Form f in Application.OpenForms)
+                {
+                    if (f != this && !(f is login))
+                    {
+                        hayOtroForm = true;
+                        break;
+                    }
+                }
+                if (!hayOtroForm)
+                    Application.Exit();
+            };
         }
 
         private void InitializeComponents()
@@ -295,14 +313,17 @@ namespace ZapateriaWinForms.Views
                     }
                 }
             }
-            picLogo.Image = icon;
+            if (picLogo != null)
+                picLogo.Image = icon;
         }
 
         private void BtnMostrarPassword_Click(object sender, EventArgs e)
         {
             passwordVisible = !passwordVisible;
-            txtContrasena.UseSystemPasswordChar = !passwordVisible;
-            btnMostrarPassword.Text = passwordVisible ? "🙈" : "👁";
+            if (txtContrasena != null)
+                txtContrasena.UseSystemPasswordChar = !passwordVisible;
+            if (btnMostrarPassword != null)
+                btnMostrarPassword.Text = passwordVisible ? "🙈" : "👁";
         }
 
         private GraphicsPath GetRoundedRectangle(Rectangle rect, int radius)
@@ -318,8 +339,8 @@ namespace ZapateriaWinForms.Views
 
         private void BtnLogin_Click(object sender, EventArgs e)
         {
-            string usuario = txtUsuario.Text.Trim();
-            string contrasena = txtContrasena.Text;
+            string usuario = txtUsuario?.Text.Trim() ?? string.Empty;
+            string contrasena = txtContrasena?.Text ?? string.Empty;
 
             if (string.IsNullOrEmpty(usuario) || string.IsNullOrEmpty(contrasena))
             {
@@ -328,8 +349,11 @@ namespace ZapateriaWinForms.Views
             }
 
             // Animación de loading
-            btnLogin.Text = "Verificando...";
-            btnLogin.Enabled = false;
+            if (btnLogin != null)
+            {
+                btnLogin.Text = "Verificando...";
+                btnLogin.Enabled = false;
+            }
 
             try
             {
@@ -337,9 +361,9 @@ namespace ZapateriaWinForms.Views
                 {
                     conn.Open();
                     string query = @"
-                        SELECT Posicion 
-                        FROM Empleados 
-                        WHERE Correo = @usuario AND Contrasena = @contrasena";
+                        SELECT Rol 
+                        FROM UsuariosLogin 
+                        WHERE Nombre_Usuario = @usuario AND Contrasena = @contrasena";
 
                     using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
@@ -350,8 +374,18 @@ namespace ZapateriaWinForms.Views
 
                         if (result != null)
                         {
-                            string rol = result.ToString();
+                            string rol = result?.ToString() ?? string.Empty;
+                            userRol = rol;
+                            userName = usuario;
                             ShowMessage($"¡Bienvenido {rol}!", true);
+                            // Abrir MainForm como modal y limpiar campos al volver
+                            this.Hide();
+                            var mainForm = new MainForm(rol, usuario);
+                            mainForm.ShowDialog();
+                            // Al cerrar MainForm, limpiar y mostrar login
+                            if (txtUsuario != null) txtUsuario.Text = string.Empty;
+                            if (txtContrasena != null) txtContrasena.Text = string.Empty;
+                            this.Show();
                         }
                         else
                         {
@@ -362,20 +396,23 @@ namespace ZapateriaWinForms.Views
             }
             catch (Exception ex)
             {
-                ShowMessage("Error de conexión con la base de datos.", false);
+                ShowMessage($"Error de conexión: {ex.Message}", false);
                 Console.WriteLine(ex.Message);
             }
             finally
             {
-                btnLogin.Text = "Iniciar Sesión";
-                btnLogin.Enabled = true;
+                if (btnLogin != null)
+                {
+                    btnLogin.Text = "Iniciar Sesión";
+                    btnLogin.Enabled = true;
+                }
             }
         }
 
         private void ShowMessage(string message, bool success)
         {
-            lblMensaje.Text = message;
-            lblMensaje.ForeColor = success ? Color.FromArgb(34, 197, 94) : Color.FromArgb(239, 68, 68);
+            if (lblMensaje != null) lblMensaje.Text = message;
+            lblMensaje!.ForeColor = success ? Color.FromArgb(34, 197, 94) : Color.FromArgb(239, 68, 68);
 
             // Animación del mensaje
             lblMensaje.Visible = true;
@@ -433,7 +470,7 @@ namespace ZapateriaWinForms.Views
 
     public class RoundedTextBox : TextBox
     {
-        public string PlaceholderText { get; set; } = "";
+        public new string PlaceholderText { get; set; } = "";
         private bool isPlaceholder = false;
 
         public RoundedTextBox()

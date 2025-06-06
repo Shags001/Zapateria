@@ -13,7 +13,7 @@ namespace ZapateriaWinForms.Views
         private BindingSource bindingSource;
         private List<dynamic> ventasOriginal = new List<dynamic>();
 
-        public VentasForm()
+        public VentasForm(string rol = "")
         {
             this.Text = "Ventas";
             this.Width = 850;
@@ -21,6 +21,21 @@ namespace ZapateriaWinForms.Views
             this.StartPosition = FormStartPosition.CenterParent;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
             this.Font = new System.Drawing.Font("Segoe UI", 10);
+
+            // Panel principal para responsividad
+            var mainPanel = new TableLayoutPanel {
+                Dock = DockStyle.Fill,
+                RowCount = 3,
+                ColumnCount = 1,
+                BackColor = System.Drawing.Color.WhiteSmoke,
+                Padding = new Padding(0),
+                AutoSize = true,
+                AutoSizeMode = AutoSizeMode.GrowAndShrink
+            };
+            mainPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 60)); // Buscador
+            mainPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 100)); // Tabla
+            mainPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 60)); // Botones
+            mainPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
 
             var panelBusqueda = new TableLayoutPanel {
                 RowCount = 1,
@@ -35,6 +50,7 @@ namespace ZapateriaWinForms.Views
             txtBuscar.TextChanged += (s, e) => Filtrar();
             panelBusqueda.Controls.Add(txtBuscar, 0, 0);
 
+            // DataGridView responsivo y estilizado
             dgvVentas = new DataGridView
             {
                 Dock = DockStyle.Fill,
@@ -52,6 +68,13 @@ namespace ZapateriaWinForms.Views
                 AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
                 ColumnHeadersVisible = true
             };
+            dgvVentas.Dock = DockStyle.Fill;
+            dgvVentas.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dgvVentas.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvVentas.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            dgvVentas.MinimumSize = new System.Drawing.Size(400, 200);
+            dgvVentas.MaximumSize = new System.Drawing.Size(2000, 2000);
+            dgvVentas.Margin = new Padding(0);
 
             // Definir columnas manualmente
             var colFolio = new DataGridViewTextBoxColumn { DataPropertyName = "ID_Venta", HeaderText = "Folio" };
@@ -63,9 +86,54 @@ namespace ZapateriaWinForms.Views
             dgvVentas.Columns.Clear();
             dgvVentas.Columns.AddRange(new DataGridViewColumn[] { colFolio, colFecha, colTotal, colIDEmpleado, colEmpleado, colMetodo });
 
+            // Panel de botones
+            var panelBotones = new TableLayoutPanel {
+                Dock = DockStyle.Fill,
+                RowCount = 1,
+                ColumnCount = 2,
+                BackColor = System.Drawing.Color.WhiteSmoke,
+                Padding = new Padding(0),
+                AutoSize = true,
+                AutoSizeMode = AutoSizeMode.GrowAndShrink
+            };
+            panelBotones.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50));
+            panelBotones.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50));
+
+            var btnAgregar = new Button { Text = "Agregar", Dock = DockStyle.Fill };
+            var btnEditar = new Button { Text = "Editar", Dock = DockStyle.Fill };
+            EstilizarBoton(btnAgregar, "#3B82F6", "#2563EB"); // Azul
+            EstilizarBoton(btnEditar, "#6366F1", "#4338CA"); // Morado
+            btnAgregar.Click += (s, e) => {
+                var form = new VentaEditForm(null);
+                if (form.ShowDialog() == DialogResult.OK)
+                    CargarVentas();
+            };
+            btnEditar.Click += (s, e) => {
+                dynamic? venta = null;
+                if (dgvVentas.CurrentRow != null && dgvVentas.CurrentRow.DataBoundItem != null)
+                    venta = dgvVentas.CurrentRow.DataBoundItem;
+                else if (dgvVentas.SelectedRows.Count > 0 && dgvVentas.SelectedRows[0].DataBoundItem != null)
+                    venta = dgvVentas.SelectedRows[0].DataBoundItem;
+                if (venta != null)
+                {
+                    var form = new VentaEditForm(venta);
+                    if (form.ShowDialog() == DialogResult.OK)
+                        CargarVentas();
+                }
+                else
+                {
+                    MessageBox.Show("Selecciona una venta para editar.");
+                }
+            };
+            panelBotones.Controls.Add(btnAgregar, 0, 0);
+            panelBotones.Controls.Add(btnEditar, 1, 0);
+
+            // Ensamblar el layout
+            mainPanel.Controls.Add(panelBusqueda, 0, 0);
+            mainPanel.Controls.Add(dgvVentas, 0, 1);
+            mainPanel.Controls.Add(panelBotones, 0, 2);
             this.Controls.Clear();
-            this.Controls.Add(dgvVentas);
-            this.Controls.Add(panelBusqueda);
+            this.Controls.Add(mainPanel);
 
             bindingSource = new BindingSource();
             dgvVentas.DataSource = bindingSource;
@@ -130,6 +198,18 @@ namespace ZapateriaWinForms.Views
                 }
             }
             bindingSource.DataSource = ventasOriginal;
+        }
+
+        private void EstilizarBoton(Button btn, string colorHex, string hoverHex)
+        {
+            btn.BackColor = System.Drawing.ColorTranslator.FromHtml(colorHex);
+            btn.ForeColor = System.Drawing.Color.White;
+            btn.FlatStyle = FlatStyle.Flat;
+            btn.FlatAppearance.BorderSize = 0;
+            btn.Font = new System.Drawing.Font("Segoe UI", 11, System.Drawing.FontStyle.Bold);
+            btn.Height = 40;
+            btn.MouseEnter += (s, e) => btn.BackColor = System.Drawing.ColorTranslator.FromHtml(hoverHex);
+            btn.MouseLeave += (s, e) => btn.BackColor = System.Drawing.ColorTranslator.FromHtml(colorHex);
         }
     }
 }
