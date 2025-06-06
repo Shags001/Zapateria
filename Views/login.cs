@@ -106,11 +106,7 @@ namespace ZapateriaWinForms.Views
                 TextAlign = ContentAlignment.MiddleCenter,
                 Size = new Size(400, 30),
                 Location = new Point(0, 330)
-                Text = "Usuario:",
-                Location = new Point(30, 60),
-                AutoSize = true,
-                Font = new Font("Segoe UI", 10, FontStyle.Bold),
-                ForeColor = Color.FromArgb(90, 45, 30)
+                
             };
             panelLeft.Controls.Add(lblSlogan);
 
