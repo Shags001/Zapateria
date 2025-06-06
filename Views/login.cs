@@ -36,7 +36,7 @@ namespace ZapateriaWinForms.Views
             this.Size = new Size(900, 550);
             this.StartPosition = FormStartPosition.CenterScreen;
             this.FormBorderStyle = FormBorderStyle.None;
-            this.BackColor = Color.LightGray;
+            this.BackColor = Color.FromArgb(240, 244, 248);
             this.SetStyle(ControlStyles.ResizeRedraw, true);
 
             // Panel principal con esquinas redondeadas
